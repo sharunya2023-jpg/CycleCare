@@ -1,0 +1,223 @@
+/* 🌸 CycleCare Web Chat - Responsive Glass UI - Updated for Web */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  /* Soft, animated gradient background */
+  background: linear-gradient(120deg, #ffdde1, #ee9ca7, #fcbad3, #f5d6d9);
+  background-size: 400% 400%;
+  animation: bgShift 15s ease infinite; /* Smoother, slower animation */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  overflow: hidden;
+}
+
+@keyframes bgShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.main {
+  /* Increased size for web view */
+  width: min(90%, 650px);
+  height: min(90vh, 850px);
+  display: flex;
+  flex-direction: column;
+  /* Frosted Glass Effect */
+  background: rgba(255, 255, 255, 0.55); /* Slightly less transparent */
+  backdrop-filter: blur(20px); /* More blur */
+  border-radius: 30px; /* Softer edges */
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18); /* Stronger, deeper shadow */
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.7);
+}
+
+header {
+  text-align: center;
+  padding: 16px 0;
+  background: rgba(255,255,255,0.6); /* Slightly darker header */
+  border-bottom: 1px solid rgba(255,255,255,0.6);
+  font-size: 1.5rem; /* Larger header */
+  font-weight: 700;
+  color: #880e4f;
+  position: relative;
+  z-index: 10;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #c2185b;
+  margin-top: -5px;
+}
+
+.chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Increased gap */
+  scroll-behavior: smooth;
+  position: relative;
+}
+
+/* Custom Scrollbar for better aesthetics */
+.chat::-webkit-scrollbar {
+  width: 8px;
+}
+.chat::-webkit-scrollbar-thumb {
+  background: #f06292;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.5); /* Border to simulate glass look */
+}
+.chat::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+/* CHAT BUBBLES - CLASSIC LOOK */
+.message {
+  max-width: 85%;
+  padding: 14px 18px;
+  word-wrap: break-word;
+  line-height: 1.5;
+  animation: fadeIn 0.3s ease-out;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Subtle shadow on bubbles */
+}
+
+@keyframes fadeIn {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* User Message Bubble */
+.message.user {
+  background: #f48fb1; /* Medium Pink */
+  color: white;
+  align-self: flex-end;
+  /* Chat bubble shape with pointer bottom-right */
+  border-radius: 1.5em 1.5em 0.3em 1.5em; 
+}
+
+/* Assistant Message Bubble */
+.message.assistant {
+  background: #fff; /* White/Light background for assistant */
+  color: #4a148c; /* Deep Purple text */
+  align-self: flex-start;
+  /* Chat bubble shape with pointer bottom-left */
+  border-radius: 1.5em 1.5em 1.5em 0.3em;
+  border: 1px solid #f8bbd0; /* Light border */
+}
+
+/* QUICK ACTIONS */
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px; /* Increased gap */
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.7);
+  border-top: 1px solid rgba(255,255,255,0.4);
+}
+
+.quick-actions button {
+  background: #f8bbd0;
+  border: none;
+  color: #4a148c;
+  font-weight: 500;
+  padding: 10px 16px;
+  border-radius: 20px; /* Pill shape */
+  cursor: pointer;
+  transition: all 0.25s;
+  flex-grow: 1; /* Allow to grow slightly */
+  min-width: 120px;
+  max-width: 48%; /* Better distribution on desktop */
+}
+.quick-actions button:hover {
+  background: #ec407a; /* Hotter Pink on hover */
+  color: white;
+  transform: translateY(-2px); /* Subtle lift effect */
+  box-shadow: 0 4px 10px rgba(236, 64, 122, 0.4);
+}
+
+/* COMPOSER */
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  border-top: 1px solid rgba(255,255,255,0.4);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.composer input {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 25px; /* Pill shape input */
+  border: 2px solid #f06292; /* Solid pink border */
+  outline: none;
+  font-size: 16px;
+  background: white;
+  color: #4a148c;
+  transition: border-color 0.2s;
+}
+.composer input:focus {
+  border-color: #ec407a;
+  box-shadow: 0 0 0 2px rgba(236, 64, 122, 0.2);
+}
+.composer input::placeholder {
+  color: #c2185b;
+}
+
+.composer button {
+  background: #ec407a;
+  border: none;
+  color: white;
+  border-radius: 25px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.25s ease, transform 0.1s;
+  box-shadow: 0 3px 8px rgba(236, 64, 122, 0.3);
+}
+.composer button:hover {
+  background: #d81b60;
+  transform: translateY(-1px);
+}
+
+/* Markdown Styling inside assistant messages (Enhanced) */
+.message.assistant strong {
+  font-weight: 700;
+  color: #6a1b9a; /* Darker accent for main points */
+}
+.message.assistant ul {
+  margin: 10px 0 10px 25px; /* More spacing */
+  padding: 0;
+  list-style: none; /* Remove default list style */
+}
+.message.assistant li {
+  position: relative;
+  margin-bottom: 6px;
+  padding-left: 20px;
+}
+.message.assistant li::before {
+  content: '🌸'; /* Novelty: custom bullet points */
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 12px;
+}
+.message.assistant p {
+  margin: 8px 0;
+}
