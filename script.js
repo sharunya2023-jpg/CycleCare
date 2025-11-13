@@ -1,15 +1,14 @@
-// 🌸 CycleCare - Hybrid Logic (Offline + Gemini API)
-// Default cycle: 28 days
-
 const chat = document.getElementById('chat');
 const input = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 const quick = document.querySelector('.quick-actions');
+const themeSwitch = document.getElementById('themeSwitch'); 
+const body = document.body;
+
 const DEFAULT_CYCLE = 28;
 let waitingForDate = false;
 
-// ✨ Hardcoded Gemini API key
-const GEMINI_API_KEY = "AIzaSyBbHLZrmJVtutAGvKt5uVRqCeWwdnqxeBQ"; // ✅ replace this
+const GEMINI_API_KEY = "AIzaSyBbHLZrmJVtutAGvKt5uVRqCeWwdnqxeBQ";
 
 function addMessage(text, role = 'assistant') {
   const el = document.createElement('div');
@@ -58,7 +57,7 @@ function sendTips() {
 
 function predictFromLastDate(isoDateStr, cycleLength = DEFAULT_CYCLE) {
   const d = new Date(isoDateStr);
-  if (isNaN(d)) return addMessage("❌ Invalid date format. Use YYYY-MM-DD.");
+  if (isNaN(d.getTime())) return addMessage("❌ Invalid date format. Use YYYY-MM-DD.");
 
   const next = new Date(d);
   next.setDate(next.getDate() + Number(cycleLength));
@@ -75,7 +74,7 @@ function predictFromLastDate(isoDateStr, cycleLength = DEFAULT_CYCLE) {
 }
 
 async function askGemini(message) {
-  if (!GEMINI_API_KEY) return "⚠️ Gemini API key missing.";
+  if (!GEMINI_API_KEY || GEMINI_API_KEY === "<api key>") return "⚠️ Gemini API key missing or placeholder used.";
   try {
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
@@ -91,6 +90,19 @@ async function askGemini(message) {
     return "⚠️ There was a problem connecting to Gemini.";
   }
 }
+
+function toggleTheme() {
+  body.classList.toggle('dark-mode');
+  const iconSpan = themeSwitch.querySelector('.material-symbols-outlined');
+  
+  if (body.classList.contains('dark-mode')) {
+    iconSpan.textContent = 'light_mode'; 
+  } else {
+    iconSpan.textContent = 'dark_mode';
+  }
+}
+
+themeSwitch.addEventListener('click', toggleTheme);
 
 sendBtn.addEventListener('click', () => {
   const text = input.value.trim();
@@ -108,7 +120,7 @@ sendBtn.addEventListener('click', () => {
 input.addEventListener('keydown', e => e.key === 'Enter' && sendBtn.click());
 quick.addEventListener('click', e => {
   const btn = e.target.closest('button');
-  if (!btn) return;
+  if (!btn || btn.id === 'themeSwitch') return;
   const action = btn.dataset.action;
   addMessage(btn.innerText, 'user');
   if (action === 'predict') askLastDateForPrediction();
