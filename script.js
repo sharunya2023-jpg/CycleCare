@@ -2,7 +2,7 @@ const chat = document.getElementById('chat');
 const input = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 const quick = document.querySelector('.quick-actions');
-const themeSwitch = document.getElementById('themeSwitch'); 
+const themeSwitch = document.getElementById('themeSwitch');
 const body = document.body;
 
 const DEFAULT_CYCLE = 28;
@@ -22,11 +22,17 @@ addMessage("Hey there! I’m CycleCare 🌸 — your period buddy! Ask me anythi
 
 function handleUserText(text) {
   text = text.trim().toLowerCase();
-  if (text.includes('predict') || text.includes('next period') || text.includes('when is my next')) return askLastDateForPrediction();
+
+  // Only trigger prediction mode for explicit prediction commands
+  if (text.includes('predict') || text.includes('next period') || text.includes('when is my next')) {
+      return askLastDateForPrediction();
+  }
+  
   if (text.includes('stages') || text.includes('cycle stage')) return sendStages();
   if (text.includes('tip') || text.includes('health')) return sendTips();
-  if (text.includes('about')) return addMessage("I’m CycleCare — a friendly period companion 🌷. I can predict cycles, explain stages, and share health tips.", 'assistant');
+  if (text.includes('about cyclecare')) return addMessage("I’m CycleCare — a friendly period companion 🌷. I can predict cycles, explain stages, and share health tips.", 'assistant');
 
+  // Any other question, including "is it regular" or general health queries, goes to Gemini.
   addMessage("💭 Thinking...", 'assistant');
   askGemini(text).then(reply => chat.lastChild.innerHTML = marked.parse(reply));
 }
@@ -94,9 +100,9 @@ async function askGemini(message) {
 function toggleTheme() {
   body.classList.toggle('dark-mode');
   const iconSpan = themeSwitch.querySelector('.material-symbols-outlined');
-  
+
   if (body.classList.contains('dark-mode')) {
-    iconSpan.textContent = 'light_mode'; 
+    iconSpan.textContent = 'light_mode';
   } else {
     iconSpan.textContent = 'dark_mode';
   }
@@ -126,5 +132,5 @@ quick.addEventListener('click', e => {
   if (action === 'predict') askLastDateForPrediction();
   if (action === 'stages') sendStages();
   if (action === 'tips') sendTips();
-  if (action === 'about') addMessage("CycleCare helps you understand your menstrual cycle 💖 — predicts next period, explains stages, and offers wellness tips. Educational only.");
+  if (action === 'about cyclecare') addMessage("CycleCare helps you understand your menstrual cycle 💖 — predicts next period, explains stages, and offers wellness tips. Educational only.");
 });
